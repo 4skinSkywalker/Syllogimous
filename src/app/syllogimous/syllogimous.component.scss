@@ -1,0 +1,59 @@
+* {
+    margin: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    color: whitesmoke;
+}
+
+button:focus {
+    outline: none;
+}
+
+.syllogism {
+    background-color: transparent;
+}
+
+.custom-container {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    background-color: rgba(255, 0, 0, 0.3);
+    background-image: url('https://source.unsplash.com/random');
+    background-size: cover;
+
+    animation-name: fadeIn;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}
+
+.custom-content {
+    width: 320px;
+}
+
+.btn-area {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    button {
+        margin: 1em;
+        flex-grow: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

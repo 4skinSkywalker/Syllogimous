@@ -11,9 +11,9 @@ import { merge } from 'rxjs/index';
 })
 export class SyllogimousComponent implements OnInit {
   @ViewChild('true')
-  true: ElementRef;
+  btnTrue: ElementRef;
   @ViewChild('false')
-  false: ElementRef;
+  btnFalse: ElementRef;
   syllogism = new Syllogism();
   value;
   text;
@@ -25,13 +25,17 @@ export class SyllogimousComponent implements OnInit {
   ngOnInit() {
     this.newSyllogism();
 
-    const true$ = fromEvent(this.true.nativeElement, 'click')
+    const btnTrue = this.btnTrue.nativeElement
+    const true$ = fromEvent(btnTrue, 'click')
       .pipe(
+        tap(() => this.addClass(btnTrue, 'active', 400)),
         mapTo(true)
       );
 
-    const false$ = fromEvent(this.false.nativeElement, 'click')
+    const btnFalse = this.btnFalse.nativeElement
+    const false$ = fromEvent(btnFalse, 'click')
       .pipe(
+        tap(() => this.addClass(btnFalse, 'active', 400)),
         mapTo(false)
       );
 
@@ -56,10 +60,14 @@ export class SyllogimousComponent implements OnInit {
       });
   }
 
-  newSyllogism() {
+  private newSyllogism() {
     this.value = this.syllogism.init();
     this.text = this.value.text;
     // console.log('New:', this.value);
   }
 
+  private addClass(element, name, time) {
+    element.classList.add(name);
+    setTimeout(() => element.classList.remove(name), time);
+  }
 }

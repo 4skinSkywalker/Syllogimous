@@ -61,7 +61,30 @@ export class SyllogimousComponent implements OnInit {
   }
 
   private newSyllogism(score) {
-    const namingFn = score < 100 ? this.syllogism.useLetters : this.syllogism.useWords;
+    let namingFn = this.syllogism.useLetters;
+    switch (true) {
+      case score > 1499:
+        namingFn = this.syllogism.usePointers;
+        break;
+      case score > 1249:
+        namingFn = this.syllogism.usePolygons;
+        break;
+      case score > 999:
+        namingFn = this.syllogism.useSimilarCircles;
+        break;
+      case score > 749:
+        namingFn = this.syllogism.useSimilarSquares;
+        break;
+      case score > 499:
+        namingFn = this.syllogism.useCuneiform;
+        break;
+      case score > 249:
+        namingFn = this.syllogism.useBraille;
+        break;
+      case score > 99:
+        namingFn = this.syllogism.useWords;
+        break;
+    }
     this.value = this.syllogism.init(namingFn);
     this.text = this.value.text;
     // console.log('New:', this.value);

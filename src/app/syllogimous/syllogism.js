@@ -57,7 +57,9 @@ Syllogism.prototype.randomPattern = function () {
         return this.validSyllogisms[Math.random()*this.validSyllogisms.length|0]
     } 
     var letters = Object.keys(this.types)
-    var schema = [0,0,0].map(() => letters[Math.random()*letters.length|0]).join``
+    var schema = [0,0,0]
+        .map(() => letters[Math.random()*letters.length|0])
+        .join``
     return schema + (1 + Math.random()*4|0)
 }
 
@@ -65,9 +67,19 @@ Syllogism.prototype.assignPropositions = function (doesTextChange) {
     var typeSchema = [...this.pattern]
     var figureIndex = typeSchema.pop()
 
-    this.major = this.types[ typeSchema[0] ]( ...this.figures[figureIndex](this.S, this.M, this.P)[0].split('-'), doesTextChange)
-    this.minor = this.types[ typeSchema[1] ]( ...this.figures[figureIndex](this.S, this.M, this.P)[1].split('-'), doesTextChange)
-    this.conclusion = this.types[ typeSchema[2] ](this.S, this.P, doesTextChange)
+    this.major = this.types[ typeSchema[0] ]( 
+            ...this.figures[figureIndex](this.S, this.M, this.P)[0].split('-'),
+            doesTextChange
+        )
+    this.minor = this.types[ typeSchema[1] ]( 
+            ...this.figures[figureIndex](this.S, this.M, this.P)[1].split('-'),
+            doesTextChange
+        )
+    this.conclusion = this.types[ typeSchema[2] ](
+            this.S,
+            this.P,
+            doesTextChange
+        )
 }
 
 Syllogism.prototype.init = function (namingFn, doesTextChange) {
@@ -82,10 +94,18 @@ Syllogism.prototype.init = function (namingFn, doesTextChange) {
 Syllogism.prototype.validSyllogisms = ["aaa1", "eae1", "aii1", "eio1", "aai1", "eao1", "aee2", "eae2", "eio2", "aoo2", "aeo2", "eao2", "aii3", "iai3", "oao3", "eio3", "aai3", "eao3", "aee4", "iai4", "eio4", "aeo4", "eao4", "aai4"]
 
 Syllogism.prototype.types = {
-    a: (S, P, doesTextChange) => [`All ${S} is ${P}`, `Every ${S} in ${P}`][!doesTextChange ? 0 : Math.random()*2|0],
-    e: (S, P, doesTextChange) => [`No ${S} is ${P}`, `Zero ${S} in ${P}`][!doesTextChange ? 0 : Math.random()*2|0],
-    i: (S, P, doesTextChange) => [`Some ${S} is ${P}`, `One or more ${S} in ${P}`, `At least one ${S} in ${P}`][!doesTextChange ? 0 : Math.random()*3|0],
-    o: (S, P, doesTextChange) => [`Some ${S} is not ${P}`, `One or more ${S} out ${P}`, `At least one ${S} out ${P}`][!doesTextChange ? 0 : Math.random()*3|0],
+    a: (S, P, bool) => 
+        [`All ${S} is ${P}`, `Every ${S} in ${P}`]
+        [!bool ? 0 : Math.random()*2|0],
+    e: (S, P, bool) => 
+        [`No ${S} is ${P}`, `Zero ${S} in ${P}`]
+        [!bool ? 0 : Math.random()*2|0],
+    i: (S, P, bool) => 
+        [`Some ${S} is ${P}`, `One or more ${S} in ${P}`, `At least one ${S} in ${P}`]
+        [!bool ? 0 : Math.random()*3|0],
+    o: (S, P, bool) => 
+        [`Some ${S} is not ${P}`, `One or more ${S} out ${P}`, `At least one ${S} out ${P}`]
+        [!bool ? 0 : Math.random()*3|0],
 }
 
 Syllogism.prototype.figures = {

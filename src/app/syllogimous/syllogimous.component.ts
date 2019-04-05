@@ -64,11 +64,11 @@ export class SyllogimousComponent implements OnInit {
     let namingFn = this.syllogism.useLetters;
     let doesTextChange = false;
     switch (true) {
-      case score > 599:
+      case score > 549:
         namingFn = this.syllogism.useSimilar;
         doesTextChange = true;
         break;
-      case score > 499:
+      case score > 449:
         namingFn = this.syllogism.useSimilar;
         break;
       case score > 349:

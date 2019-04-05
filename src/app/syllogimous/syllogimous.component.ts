@@ -48,7 +48,7 @@ export class SyllogimousComponent implements OnInit {
         scan((acc, point) => acc + point, this.score),
         tap(score => {
           if (score >= this.goal) {
-            this.goal *= 10;
+            this.goal = Math.pow(10, Math.ceil(Math.log10(score + 1)));
             localStorage.setItem('goal', '' + this.goal);
           }
           localStorage.setItem('score', '' + score);

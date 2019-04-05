@@ -13,11 +13,30 @@ function Syllogism() {
     this.text
 }
 
-Syllogism.prototype.namePropositions = function () {
+Syllogism.prototype.namePropositions = function (arrayOfThree) {
+    [this.S, this.M, this.P] = arrayOfThree
+}
+
+Syllogism.prototype.extractRandomFrom = function (array) {
+    return array.splice(Math.random()*array.length|0, 1).pop()
+}
+
+Syllogism.prototype.useLetters = function () {
     var alphabet = [...'QWERTYUIOPASDFGHJKLZXCVBNM']
-    this.S = alphabet.splice(Math.random()*alphabet.length|0, 1).pop()
-    this.M = alphabet.splice(Math.random()*alphabet.length|0, 1).pop()
-    this.P = alphabet.splice(Math.random()*alphabet.length|0, 1).pop()
+    var result = []
+    for (var i = 0; i < 3; i++) {
+        result[i] = this.extractRandomFrom(alphabet)
+    }
+    return result
+}
+
+Syllogism.prototype.useWords = function () {
+    var words = ['BEE', 'BET', 'BIP', 'CAB', 'CAT', 'CUT', 'DAM', 'DOC', 'DOG']
+    var result = []
+    for (var i = 0; i < 3; i++) {
+        result[i] = this.extractRandomFrom(words)
+    }
+    return result
 }
 
 Syllogism.prototype.randomPattern = function () {
@@ -39,8 +58,8 @@ Syllogism.prototype.assignPropositions = function () {
     this.conclusion = this.types[ typeSchema[2] ](this.S, this.P)
 }
 
-Syllogism.prototype.init = function () {
-    this.namePropositions()
+Syllogism.prototype.init = function (namingFn) {
+    this.namePropositions(namingFn.call(this))
     this.pattern = this.randomPattern()
     this.isValid = this.validSyllogisms.indexOf(this.pattern) > -1
     this.assignPropositions()

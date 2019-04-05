@@ -23,16 +23,16 @@ export class SyllogimousComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.newSyllogism();
+    this.newSyllogism(this.score);
 
-    const btnTrue = this.btnTrue.nativeElement
+    const btnTrue = this.btnTrue.nativeElement;
     const true$ = fromEvent(btnTrue, 'click')
       .pipe(
         tap(() => this.addClass(btnTrue, 'active', 400)),
         mapTo(true)
       );
 
-    const btnFalse = this.btnFalse.nativeElement
+    const btnFalse = this.btnFalse.nativeElement;
     const false$ = fromEvent(btnFalse, 'click')
       .pipe(
         tap(() => this.addClass(btnFalse, 'active', 400)),
@@ -47,12 +47,12 @@ export class SyllogimousComponent implements OnInit {
         tap(point => console.log(point === 1 ? 'Correct!' : 'Incorrect.')),
         scan((acc, point) => acc + point, this.score),
         tap(score => {
-          if (score === this.goal) {
-            this.goal *= 2;
+          if (score >= this.goal) {
+            this.goal *= 10;
             localStorage.setItem('goal', '' + this.goal);
           }
           localStorage.setItem('score', '' + score);
-          this.newSyllogism();
+          this.newSyllogism(score);
         })
       )
       .subscribe(score => {
@@ -60,8 +60,9 @@ export class SyllogimousComponent implements OnInit {
       });
   }
 
-  private newSyllogism() {
-    this.value = this.syllogism.init();
+  private newSyllogism(score) {
+    const namingFn = score < 100 ? this.syllogism.useLetters : this.syllogism.useWords;
+    this.value = this.syllogism.init(namingFn);
     this.text = this.value.text;
     // console.log('New:', this.value);
   }

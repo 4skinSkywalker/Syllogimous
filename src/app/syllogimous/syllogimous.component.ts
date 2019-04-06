@@ -65,17 +65,30 @@ export class SyllogimousComponent implements OnInit {
     switch (true) {
       case score > 249:
         if (Math.random() < 1 / 6) {
-          const a = [this.syllogism.useBraille, this.syllogism.useSimilar];
-          namingFn = a[Math.random()*a.length|0];
+          namingFn = this.pickNamingFn([
+            this.syllogism.useBraille,
+            this.syllogism.useSimilar
+          ]);
           break;
         }
+        namingFn = this.pickNamingFn([
+          this.syllogism.useWords,
+          this.syllogism.useNames
+        ]);
+        break;
       case score > 99:
-        const a = [this.syllogism.useWords, this.syllogism.useNames];
-        namingFn = a[Math.random()*a.length|0];
+        namingFn = this.pickNamingFn([
+          this.syllogism.useWords,
+          this.syllogism.useNames
+        ]);
         break;
     }
     this.value = this.syllogism.init(namingFn);
     this.text = this.value.text;
+  }
+
+  private pickNamingFn(array) {
+    return array[Math.floor(Math.random() * array.length)];
   }
 
   private addClass(element, name, time) {

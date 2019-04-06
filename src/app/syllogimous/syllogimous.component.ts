@@ -71,11 +71,6 @@ export class SyllogimousComponent implements OnInit {
           ]);
           break;
         }
-        namingFn = this.pickNamingFn([
-          this.syllogism.useWords,
-          this.syllogism.useNames
-        ]);
-        break;
       case score > 99:
         namingFn = this.pickNamingFn([
           this.syllogism.useWords,

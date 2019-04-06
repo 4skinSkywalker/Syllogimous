@@ -68,14 +68,14 @@ Syllogism.prototype.assignPropositions = function () {
     var figureIndex = typeSchema.pop()
 
     this.major = this.types[ typeSchema[0] ]( 
-            ...this.figures[figureIndex](this.S, this.M, this.P)[0].split('-'),
+            ...this.figures[figureIndex](this.S, this.M, this.P)[0].split('-')
         )
     this.minor = this.types[ typeSchema[1] ]( 
-            ...this.figures[figureIndex](this.S, this.M, this.P)[1].split('-'),
+            ...this.figures[figureIndex](this.S, this.M, this.P)[1].split('-')
         )
     this.conclusion = this.types[ typeSchema[2] ](
             this.S,
-            this.P,
+            this.P
         )
 }
 

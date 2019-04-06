@@ -31,22 +31,22 @@ Syllogism.prototype.useLetters = function () {
 }
 
 Syllogism.prototype.useWords = function () {
-    return this.pickThree(['BEE', 'BET', 'BELL', 'CAB', 'CAT', 'CAP', 'DOLL', 'DOC', 'DOG'])
-    
+    return this.pickThree(['BEE', 'BET', 'BEAM', 'BELL', 'CAB', 'CAT', 'CAP', 'CALL', 'DOC', 'DOG', 'DOGE', 'DOLL']) 
+}
+
+Syllogism.prototype.useNames = function () {
+    return this.pickThree(['MATT', 'MARK', 'MAX', 'MIKE', 'JACK', 'JIM', 'JOE', 'JOHN']) 
 }
 
 Syllogism.prototype.useBraille = function () {
-    return this.pickThree([...'⠇⠕⠗⠛⠧⠼⠿⡇⡗⡧⣿'])
+    return this.pickThree([...'⠇⡇⠛⠿⣿⠧⠼⡗⡧'])
 }
 
 Syllogism.prototype.useSimilar = function () {
     var a = [
         [...'◴◵◶'],
         [...'◰◱◲'],
-        [...'⬟⯂⬢'],
-        [...'🞛🞚🞜'],
-        [...'★✩✫'],
-        [...'✿❀❁']
+        [...'★✩✫']
     ]
     return a[Math.random()*a.length|0]
 }
@@ -63,30 +63,27 @@ Syllogism.prototype.randomPattern = function () {
     return schema + (1 + Math.random()*4|0)
 }
 
-Syllogism.prototype.assignPropositions = function (doesTextChange) {
+Syllogism.prototype.assignPropositions = function () {
     var typeSchema = [...this.pattern]
     var figureIndex = typeSchema.pop()
 
     this.major = this.types[ typeSchema[0] ]( 
             ...this.figures[figureIndex](this.S, this.M, this.P)[0].split('-'),
-            doesTextChange
         )
     this.minor = this.types[ typeSchema[1] ]( 
             ...this.figures[figureIndex](this.S, this.M, this.P)[1].split('-'),
-            doesTextChange
         )
     this.conclusion = this.types[ typeSchema[2] ](
             this.S,
             this.P,
-            doesTextChange
         )
 }
 
-Syllogism.prototype.init = function (namingFn, doesTextChange) {
+Syllogism.prototype.init = function (namingFn) {
     this.namePropositions(namingFn.call(this))
     this.pattern = this.randomPattern()
     this.isValid = this.validSyllogisms.indexOf(this.pattern) > -1
-    this.assignPropositions(doesTextChange)
+    this.assignPropositions()
     this.text = `${this.major}\n${this.minor}\n${this.conclusion}`
     return this
 }
@@ -94,18 +91,10 @@ Syllogism.prototype.init = function (namingFn, doesTextChange) {
 Syllogism.prototype.validSyllogisms = ["aaa1", "eae1", "aii1", "eio1", "aai1", "eao1", "aee2", "eae2", "eio2", "aoo2", "aeo2", "eao2", "aii3", "iai3", "oao3", "eio3", "aai3", "eao3", "aee4", "iai4", "eio4", "aeo4", "eao4", "aai4"]
 
 Syllogism.prototype.types = {
-    a: (S, P, bool) => 
-        [`All ${S} is ${P}`, `Every ${S} in ${P}`]
-        [!bool ? 0 : Math.random()*2|0],
-    e: (S, P, bool) => 
-        [`No ${S} is ${P}`, `Zero ${S} in ${P}`]
-        [!bool ? 0 : Math.random()*2|0],
-    i: (S, P, bool) => 
-        [`Some ${S} is ${P}`, `One or more ${S} in ${P}`, `At least one ${S} in ${P}`]
-        [!bool ? 0 : Math.random()*3|0],
-    o: (S, P, bool) => 
-        [`Some ${S} is not ${P}`, `One or more ${S} out ${P}`, `At least one ${S} out ${P}`]
-        [!bool ? 0 : Math.random()*3|0],
+    a: (S, P) => [`All ${S} is ${P}`],
+    e: (S, P) => [`No ${S} is ${P}`],
+    i: (S, P) => [`Some ${S} is ${P}`],
+    o: (S, P) => [`Some ${S} is not ${P}`]
 }
 
 Syllogism.prototype.figures = {

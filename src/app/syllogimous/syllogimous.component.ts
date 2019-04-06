@@ -64,7 +64,7 @@ export class SyllogimousComponent implements OnInit {
     let namingFn = this.syllogism.useLetters;
     switch (true) {
       case score > 249:
-        if (Math.random() < 1 / 6) {
+        if (Math.random() < this.mapToPercentage(score, 0, 2000)) {
           namingFn = this.pickNamingFn([
             this.syllogism.useBraille,
             this.syllogism.useSimilar
@@ -80,6 +80,15 @@ export class SyllogimousComponent implements OnInit {
     }
     this.value = this.syllogism.init(namingFn);
     this.text = this.value.text;
+  }
+
+  private mapToPercentage(value, start, end) {
+    if (value < start) {
+      return 0;
+    } else if (value > end) {
+      return 1;
+    }
+    return (value - start) / (end - start);
   }
 
   private pickNamingFn(array) {

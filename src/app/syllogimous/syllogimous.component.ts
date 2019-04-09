@@ -85,7 +85,7 @@ export class SyllogimousComponent implements OnInit {
     if (score > 999) {
       setTimeout(() => {
         this.isSyllogismShown = false;
-      }, 7000 - 3000 * this.mapToPercentage(score, 1000, 3000));
+      }, 10000 - 6000 * this.mapToPercentage(score, 1000, 3000));
     }
   }
 

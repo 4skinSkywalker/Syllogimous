@@ -1,3 +1,5 @@
+$unsplash: 'https://source.unsplash.com/random';
+
 * {
     margin: 20px;
     background: rgba(0, 0, 0, 0.3);
@@ -24,8 +26,7 @@ pre.syllogism.hidden {
     align-items: center;
 
     opacity: 0;
-    background-color: rgba(255, 0, 0, 0.3);
-    background-image: url('https://source.unsplash.com/random');
+    background: rgba(255, 0, 0, 0.3) url($unsplash) fixed center;
     background-size: cover;
 
     animation-name: fadeIn;
@@ -35,7 +36,20 @@ pre.syllogism.hidden {
     animation-fill-mode: forwards;
     .custom-content {
         width: 320px;
+        position: relative;
     }
+    .custom-content:before{
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: url($unsplash) fixed center;
+        filter: blur(4px);
+        background-size: cover;
+      }
 }
 
 .btn-area {

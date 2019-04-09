@@ -9,6 +9,12 @@ pre.syllogism {
     background-color: transparent;
 }
 
+pre.syllogism.hidden {
+    animation-duration: 1s;
+    animation-name: slideAndFade;
+    opacity: 0;
+}
+
 .custom-container {
     margin: 0;
     width: 100vw;
@@ -63,6 +69,21 @@ button:focus, button:active {
 }
 
 @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% { 
+        opacity: 0;
+    }
+    100% { 
+        opacity: 1;
+    }
+}
+  
+@keyframes slideAndFade {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        transform: translate(0px, -20px);
+        opacity: 0;
+    }
 }

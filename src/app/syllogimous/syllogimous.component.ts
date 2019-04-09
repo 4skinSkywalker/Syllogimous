@@ -14,6 +14,7 @@ export class SyllogimousComponent implements OnInit {
   btnTrue: ElementRef;
   @ViewChild('false')
   btnFalse: ElementRef;
+  isSyllogismShown = true;
   syllogism = new Syllogism();
   value;
   argument;
@@ -28,14 +29,14 @@ export class SyllogimousComponent implements OnInit {
     const btnTrue = this.btnTrue.nativeElement;
     const true$ = fromEvent(btnTrue, 'click')
       .pipe(
-        tap(() => this.addClass(btnTrue, 'active', 400)),
+        tap(() => this.wowAnimation(btnTrue, 'active', 400)),
         mapTo(true)
       );
 
     const btnFalse = this.btnFalse.nativeElement;
     const false$ = fromEvent(btnFalse, 'click')
       .pipe(
-        tap(() => this.addClass(btnFalse, 'active', 400)),
+        tap(() => this.wowAnimation(btnFalse, 'active', 400)),
         mapTo(false)
       );
 
@@ -43,7 +44,17 @@ export class SyllogimousComponent implements OnInit {
 
     answer$
       .pipe(
-        map(answer => answer === this.value.isValid ? +1 : -1),
+        map(answer => {
+          if (answer === this.value.isValid) {
+            return 1;
+          }
+
+          if (this.score > 999) {
+            return -10;
+          }
+
+          return -1;
+        }),
         scan((acc, point) => acc + point, this.score),
         tap(score => {
           if (score >= this.goal) {
@@ -52,6 +63,8 @@ export class SyllogimousComponent implements OnInit {
           }
           localStorage.setItem('score', '' + score);
           this.newSyllogism(score);
+
+          this.isSyllogismShown = true;
         })
       )
       .subscribe(score => {
@@ -64,9 +77,16 @@ export class SyllogimousComponent implements OnInit {
     if (score > 99 && Math.random() < this.mapToPercentage(score, 0, 1000)) {
       namingFn = this.syllogism.useSimilar;
     }
+
     this.value = this.syllogism.init(namingFn);
     const { minor, major, conclusion } = this.value;
-    this.argument = { minor, major, conclusion }
+    this.argument = { minor, major, conclusion };
+
+    if (score > 999) {
+      setTimeout(() => {
+        this.isSyllogismShown = false;
+      }, 7000)
+    }
   }
 
   private mapToPercentage(value, start, end) {
@@ -78,11 +98,7 @@ export class SyllogimousComponent implements OnInit {
     return (value - start) / (end - start);
   }
 
-  private pickNamingFn(array) {
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
-  private addClass(element, name, time) {
+  private wowAnimation(element, name, time) {
     element.classList.add(name);
     setTimeout(() => element.classList.remove(name), time);
   }

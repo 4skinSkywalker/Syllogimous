@@ -16,7 +16,7 @@ export class SyllogimousComponent implements OnInit {
   btnFalse: ElementRef;
   syllogism = new Syllogism();
   value;
-  text;
+  argument;
   score = +localStorage.getItem('score') || 0;
   goal = +localStorage.getItem('goal') || 10;
 
@@ -44,7 +44,6 @@ export class SyllogimousComponent implements OnInit {
     answer$
       .pipe(
         map(answer => answer === this.value.isValid ? +1 : -1),
-        tap(point => console.log(point === 1 ? 'Correct!' : 'Incorrect.')),
         scan((acc, point) => acc + point, this.score),
         tap(score => {
           if (score >= this.goal) {
@@ -62,24 +61,12 @@ export class SyllogimousComponent implements OnInit {
 
   private newSyllogism(score) {
     let namingFn = this.syllogism.useLetters;
-    switch (true) {
-      case score > 249:
-        if (Math.random() < this.mapToPercentage(score, 0, 2000)) {
-          namingFn = this.pickNamingFn([
-            this.syllogism.useBraille,
-            this.syllogism.useSimilar
-          ]);
-          break;
-        }
-      case score > 99:
-        namingFn = this.pickNamingFn([
-          this.syllogism.useWords,
-          this.syllogism.useNames
-        ]);
-        break;
+    if (score > 99 && Math.random() < this.mapToPercentage(score, 0, 1000)) {
+      namingFn = this.syllogism.useSimilar;
     }
     this.value = this.syllogism.init(namingFn);
-    this.text = this.value.text;
+    const { minor, major, conclusion } = this.value;
+    this.argument = { minor, major, conclusion }
   }
 
   private mapToPercentage(value, start, end) {

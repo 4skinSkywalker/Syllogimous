@@ -30,25 +30,18 @@ Syllogism.prototype.useLetters = function () {
     return this.pickThree([...'QWERTYUIOPASDFGHJKLZXCVBNM'])
 }
 
-Syllogism.prototype.useWords = function () {
-    return this.pickThree(['BEE', 'BET', 'BEAM', 'BELL', 'CAB', 'CAT', 'CAP', 'CALL', 'DOC', 'DOG', 'DOGE', 'DOLL']) 
-}
-
-Syllogism.prototype.useNames = function () {
-    return this.pickThree(['MATT', 'MARK', 'MAX', 'MIKE', 'JACK', 'JIM', 'JOE', 'JOHN']) 
-}
-
-Syllogism.prototype.useBraille = function () {
-    return this.pickThree([...'⠇⡇⠛⠿⣿⠧⠼⡗⡧'])
-}
-
 Syllogism.prototype.useSimilar = function () {
     var a = [
-        [...'◴◵◶'],
-        [...'◰◱◲'],
-        [...'★✩✫']
+        ['CRAP', 'GAP', 'NAP', 'SLAP', 'TRAP'],
+        ['KEN', 'MEN', 'PEN', 'PET', 'ZEN'],
+        ['BOW', 'BLOW', 'LOW', 'ROW', 'SNOW'],
+        ['CORE', 'DOOR', 'FLOOR', 'PORE', 'WAR'],
+        ['BRINE', 'LINE', 'PINE', 'SIGN', 'WINE'],
+        ['BLAME', 'CLAIM', 'FRAME', 'LAME', 'SHAME'],
+        ['HOPE', 'POPE', 'ROPE', 'SLOPE', 'SOAP'],
+        ['BYTE', 'LIGHT', 'FIGHT', 'NIGHT', 'SPRITE']
     ]
-    return a[Math.random()*a.length|0]
+    return this.pickThree(a[Math.random()*a.length|0])
 }
 
 Syllogism.prototype.randomPattern = function () {
@@ -84,7 +77,6 @@ Syllogism.prototype.init = function (namingFn) {
     this.pattern = this.randomPattern()
     this.isValid = this.validSyllogisms.indexOf(this.pattern) > -1
     this.assignPropositions()
-    this.text = `${this.major}\n${this.minor}\n${this.conclusion}`
     return this
 }
 

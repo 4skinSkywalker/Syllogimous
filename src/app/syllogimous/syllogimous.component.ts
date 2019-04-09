@@ -20,6 +20,7 @@ export class SyllogimousComponent implements OnInit {
   argument;
   score = +localStorage.getItem('score') || 0;
   goal = +localStorage.getItem('goal') || 10;
+  timers = [];
 
   constructor() { }
 
@@ -62,8 +63,9 @@ export class SyllogimousComponent implements OnInit {
             localStorage.setItem('goal', '' + this.goal);
           }
           localStorage.setItem('score', '' + score);
-          this.newSyllogism(score);
 
+          this.timers.map(id => clearTimeout(id));
+          this.newSyllogism(score);
           this.isSyllogismShown = true;
         })
       )
@@ -83,9 +85,11 @@ export class SyllogimousComponent implements OnInit {
     this.argument = { minor, major, conclusion };
 
     if (score > 999) {
-      setTimeout(() => {
-        this.isSyllogismShown = false;
-      }, 10000 - 6000 * this.mapToPercentage(score, 1000, 3000));
+      this.timers.push(
+        setTimeout(() => {
+            this.isSyllogismShown = false;
+          }, 10000 - 6000 * this.mapToPercentage(score, 1000, 3000))
+      );
     }
   }
 
